@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Briefcase, MapPin, Github, GitCommitHorizontal, BookOpen, Zap, Award, Sparkles } from 'lucide-react';
 
+// test
 const experiences = [
   {
     year: '2024 - Present',

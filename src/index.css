@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+  }
+
+  body {
+    background-color: #05070f;
+    color: #f8fafc;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom sleek scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #05070f;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00f2fe, #9d4edd);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #4facfe, #ff007f);
+  }
+}
+
+@layer utilities {
+  .glass-morphism {
+    background: rgba(13, 19, 36, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-card {
+    background: rgba(18, 24, 48, 0.5);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .glass-card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-card-hover:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 242, 254, 0.4);
+    box-shadow: 0 12px 40px -10px rgba(0, 242, 254, 0.25);
+  }
+
+  .liquid-gradient {
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 25%, #9d4edd 70%, #ff007f 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .liquid-gradient-cyan-purple {
+    background: linear-gradient(135deg, #00f2fe 0%, #9d4edd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .liquid-border {
+    position: relative;
+  }
+  .liquid-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(90deg, #00f2fe, #9d4edd, #ff007f, #00f2fe);
+    background-size: 300% 300%;
+    animation: borderGlow 6s ease infinite;
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0.6;
+  }
+
+  @keyframes borderGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+}

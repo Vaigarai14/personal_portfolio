@@ -1,48 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import anime from 'animejs';
 import confetti from 'canvas-confetti';
-import { Rocket, Download, Terminal, Sparkles, ArrowDown, Code2, Globe, Cpu } from 'lucide-react';
-import Hero3DCanvas from './canvas/Hero3DCanvas';
+import { Rocket, Download, Sparkles, Zap, ShieldCheck } from 'lucide-react';
+import { heroData } from '../data/heroData';
 
 export default function HeroSection() {
-  const titleRef = useRef(null);
-  const subtitleRef = useRef(null);
-
-  useEffect(() => {
-    // Kinetic Letter Stagger Animation via Anime.js
-    if (titleRef.current) {
-      const text = titleRef.current.innerText;
-      titleRef.current.innerHTML = text
-        .split('')
-        .map((char) => `<span class='inline-block letter'>${char === ' ' ? '&nbsp;' : char}</span>`)
-        .join('');
-
-      anime.timeline({ loop: false })
-        .add({
-          targets: '.letter',
-          translateY: [60, 0],
-          translateZ: 0,
-          opacity: [0, 1],
-          easing: 'easeOutExpo',
-          duration: 1200,
-          delay: (el, i) => 250 + 40 * i,
-        });
-    }
-
-    // Subtitle fade in with anime.js
-    if (subtitleRef.current) {
-      anime({
-        targets: subtitleRef.current,
-        opacity: [0, 1],
-        translateY: [20, 0],
-        duration: 1000,
-        easing: 'easeOutQuad',
-        delay: 800,
-      });
-    }
-  }, []);
-
   const triggerConfetti = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (rect.left + rect.width / 2) / window.innerWidth;
@@ -52,174 +14,240 @@ export default function HeroSection() {
       particleCount: 60,
       spread: 70,
       origin: { x, y },
-      colors: ['#00f2fe', '#9d4edd', '#ff007f', '#ffffff'],
+      colors: ['#38bdf8', '#6366f1', '#10b981', '#ffffff'],
     });
   };
 
   const handleDownloadResume = (e) => {
     triggerConfetti(e);
-    // Download sample resume file
     const element = document.createElement('a');
-    const file = new Blob([
-      `Vaigarai - Senior Full-Stack Developer & Creative Technologist
-=============================================================
-Email: vaigarai.tech@example.com | Portfolio: https://github.com/Vaigarai14
-
-EXPERTISE:
-- Full-Stack: React, Next.js, Node.js, TypeScript, Python, GraphQL, REST APIs
-- Creative WebGL: Three.js, WebGL Shaders, GSAP, Framer Motion, Canvas API
-- Cloud & Systems: AWS, Docker, CI/CD, Microservices, Redis, PostgreSQL
-
-FEATURED ACHIEVEMENTS:
-- Architected enterprise cloud platforms serving 100k+ active users.
-- Built award-winning 3D web interactive experiences with 60 FPS WebGL rendering.
-- Over 1,200+ open-source contributions and active GitHub repository maintainer.
-      `
-    ], { type: 'text/plain' });
+    const file = new Blob([heroData.resume.content], { type: 'text/plain' });
     element.href = URL.createObjectURL(file);
-    element.download = 'Vaigarai_Resume.txt';
+    element.download = heroData.resume.fileName;
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* 3D WebGL Background Canvas */}
-      <Hero3DCanvas />
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16 lg:py-24">
+      
+      {/* ========================================================================= */}
+      {/* Vibrant Outer Cosmic Orbital Background & Glowing Nebula Atmosphere */}
+      {/* ========================================================================= */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+        {/* Soft Colorful Nebula Glows in Corners & Center */}
+        <div className="absolute top-1/4 right-1/4 w-[600px] h-[500px] bg-gradient-to-tr from-cyan-500/15 via-indigo-600/15 to-blue-500/10 rounded-full blur-[140px] animate-pulse-slow" />
+        <div className="absolute -top-32 -left-32 w-[450px] h-[450px] bg-cyan-500/10 rounded-full blur-[120px]" />
+        <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] bg-indigo-600/15 rounded-full blur-[130px]" />
 
-      {/* Background radial aura lighting */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-cyan-500/10 via-purple-600/15 to-transparent rounded-full blur-3xl pointer-events-none" />
+        {/* Outer Orbit Ring 1 - Vibrant Cyan Track */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[850px] sm:w-[1100px] sm:h-[1100px] lg:w-[1300px] lg:h-[1300px] rounded-full border border-cyan-400/25 pointer-events-none animate-[spin_70s_linear_infinite]">
+          <div className="absolute top-12 left-1/4 w-3.5 h-3.5 rounded-full bg-cyan-400 shadow-[0_0_15px_#38bdf8]" />
+          <div className="absolute bottom-16 right-1/3 w-2.5 h-2.5 rounded-full bg-sky-400 shadow-[0_0_10px_#38bdf8]" />
+        </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 container mx-auto px-6 text-center max-w-5xl py-12">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="mx-auto mb-8"
-        >
-          {/* Holographic Avatar with glowing pulsating orbits */}
-          <div className="relative w-32 h-32 md:w-36 md:h-36 mx-auto group">
-            {/* Outer dynamic rotating ring */}
-            <div className="absolute -inset-2 rounded-full border border-cyan-400/40 animate-spin-slow" />
-            <div className="absolute -inset-4 rounded-full border border-purple-500/30 border-dashed animate-[spin_20s_linear_infinite_reverse]" />
+        {/* Outer Orbit Ring 2 - Dashed Indigo Track (Reverse Spin) */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] sm:w-[1300px] sm:h-[1300px] lg:w-[1550px] lg:h-[1550px] rounded-full border border-indigo-400/25 border-dashed pointer-events-none animate-[spin_100s_linear_infinite_reverse]">
+          <div className="absolute top-1/3 -right-2 w-3.5 h-3.5 rounded-full bg-indigo-400 shadow-[0_0_15px_#6366f1]" />
+          <div className="absolute bottom-1/4 -left-2 w-3 h-3 rounded-full bg-sky-300 shadow-[0_0_12px_#38bdf8]" />
+        </div>
+
+        {/* Outer Cosmic Horizon Ring 3 */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] sm:w-[1600px] sm:h-[1600px] rounded-full border border-white/5 pointer-events-none animate-[spin_140s_linear_infinite]" />
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 2-Column Split Hero Layout: Left Content & Right Cyber-Orbit Avatar */}
+      {/* ========================================================================= */}
+      <div className="relative z-10 container mx-auto px-6 max-w-7xl">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          {/* ----------------------------------------------------------------------- */}
+          {/* Left Column: Role, Name, Subtitle, CTAs, and Stats (60% Width) */}
+          {/* ----------------------------------------------------------------------- */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left space-y-6">
             
-            {/* Pulsing blur glow */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-purple-600 blur-xl opacity-40 group-hover:opacity-80 transition-opacity animate-pulse-slow" />
+            {/* Dynamic Role Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.6 }}
+              className='mt-4'
+              // className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-morphism border border-cyan-400/40 text-xs text-cyan-300 font-mono shadow-[0_0_20px_rgba(56,189,248,0.2)] hover:border-cyan-400 transition-colors"
+            >
+              {/* <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+              <span>{heroData.roleBadge}</span> */}
+            </motion.div>
 
-            {/* Avatar core container */}
-            <div className="relative w-full h-full rounded-full glass-morphism border-2 border-cyan-400/60 p-1 flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(0,242,254,0.3)]">
-              <div className="w-full h-full rounded-full bg-gradient-to-br from-cyan-500/20 via-purple-600/30 to-black/80 flex items-center justify-center text-5xl select-none group-hover:scale-110 transition-transform duration-300">
-                👨‍💻
+            {/* Main Name Heading */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.7 }}
+            >
+              <span className="text-xs sm:text-sm font-mono text-cyan-400 uppercase tracking-widest block mb-2 font-bold">
+                Hello World, I'm
+              </span>
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-sora liquid-gradient drop-shadow-[0_10px_30px_rgba(56,189,248,0.25)]">
+                {heroData.name}
+              </h1>
+            </motion.div>
+
+            {/* Professional Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.7 }}
+              className="text-base sm:text-lg text-slate-300/90 font-normal leading-relaxed max-w-2xl"
+            >
+              {heroData.subtitle}
+            </motion.p>
+
+            {/* Interactive CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.7 }}
+              className="flex flex-wrap gap-4 items-center pt-2 w-full sm:w-auto"
+            >
+              <a
+                href={heroData.actions.primary.href}
+                onClick={triggerConfetti}
+                className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 text-white font-semibold text-sm shadow-[0_0_25px_rgba(56,189,248,0.4)] hover:shadow-[0_0_35px_rgba(56,189,248,0.7)] hover:scale-105 active:scale-95 transition-all duration-200 group cursor-pointer"
+              >
+                <Rocket className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+                <span>{heroData.actions.primary.text}</span>
+              </a>
+
+              <button
+                onClick={handleDownloadResume}
+                className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl glass-morphism border border-slate-700 text-slate-200 hover:text-white hover:border-cyan-400/60 hover:bg-cyan-500/10 font-semibold text-sm shadow-[0_0_15px_rgba(0,0,0,0.3)] hover:scale-105 active:scale-95 transition-all duration-200 group cursor-pointer"
+              >
+                <Download className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
+                <span>{heroData.actions.secondary.text}</span>
+              </button>
+            </motion.div>
+
+            {/* HR-Impression Mini Stats Cards */}
+            <motion.div
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.7 }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full pt-4"
+            >
+              {heroData.stats.map((stat, idx) => (
+                <div
+                  key={idx}
+                  className={`glass-card p-3.5 rounded-xl border border-white/10 ${stat.hoverBorder} transition-all hover:scale-105 text-left`}
+                >
+                  <div className={`text-xl sm:text-2xl font-bold font-sora ${stat.color}`}>
+                    {stat.value}
+                  </div>
+                  <div className="text-[11px] text-slate-300 font-mono mt-0.5 leading-tight">{stat.label}</div>
+                </div>
+              ))}
+            </motion.div>
+
+          </div>
+
+          {/* ----------------------------------------------------------------------- */}
+          {/* Right Column: Dedicated Cyber-Orbital Avatar Visual Showcase (40% Width) */}
+          {/* ----------------------------------------------------------------------- */}
+          <div className="lg:col-span-5 flex items-center justify-center relative">
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] flex items-center justify-center"
+            >
+              
+              {/* Concentric Dedicated Orbit Rings Around Avatar */}
+              {/* Ring 1 - Inner Cyan Spin */}
+              <div className="absolute inset-4 rounded-full border border-cyan-400/40 animate-[spin_20s_linear_infinite]">
+                <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_12px_#38bdf8]" />
               </div>
-            </div>
 
-            {/* Live status badge */}
-            <div className="absolute bottom-1 right-1 px-2.5 py-0.5 rounded-full bg-[#05070f] border border-green-400/60 flex items-center gap-1.5 shadow-lg shadow-green-500/20">
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-ping inline-block" />
-              <span className="text-[10px] font-mono font-bold text-green-300 uppercase tracking-wider">Available</span>
-            </div>
+              {/* Ring 2 - Dashed Indigo Reverse Spin */}
+              <div className="absolute inset-0 rounded-full border-2 border-indigo-400/35 border-dashed animate-[spin_28s_linear_infinite_reverse]">
+                <div className="absolute top-1/4 -right-1.5 w-3.5 h-3.5 rounded-full bg-indigo-400 shadow-[0_0_12px_#6366f1]" />
+                <div className="absolute bottom-1/4 -left-1.5 w-2.5 h-2.5 rounded-full bg-sky-300 shadow-[0_0_10px_#38bdf8]" />
+              </div>
+
+              {/* Ring 3 - Outer Dotted Cyan Orbit */}
+              <div className="absolute -inset-6 sm:-inset-8 rounded-full border border-cyan-400/25 border-dotted animate-[spin_42s_linear_infinite]">
+                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 shadow-[0_0_15px_#38bdf8]" />
+              </div>
+
+              {/* Avatar Breathing Ambient Glow Aura */}
+              <div className="absolute inset-10 rounded-full bg-gradient-to-tr from-cyan-400/25 via-indigo-600/25 to-blue-500/20 blur-2xl animate-pulse-slow pointer-events-none" />
+
+              {/* Central Avatar Orb */}
+              <div className="relative z-10 group">
+                <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-full glass-morphism border-2 border-cyan-400/70 p-1.5 flex items-center justify-center overflow-hidden shadow-[0_0_40px_rgba(56,189,248,0.35)] group-hover:border-cyan-300 transition-all duration-300">
+                  <div className="w-full h-full rounded-full bg-gradient-to-br from-cyan-500/20 via-indigo-600/25 to-black/90 flex items-center justify-center text-5xl sm:text-6xl select-none group-hover:scale-110 transition-transform duration-300">
+                    {heroData.avatar.emoji}
+                  </div>
+                </div>
+
+                {/* Live Status Pill Underneath Avatar */}
+                <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-[#030712] border border-green-400/70 flex items-center gap-2 shadow-xl shadow-green-500/25 whitespace-nowrap z-20">
+                  <span className="w-2 h-2 rounded-full bg-green-400 animate-ping inline-block" />
+                  <span className="text-[10px] sm:text-xs font-mono font-bold text-green-300 uppercase tracking-wider">
+                    {heroData.avatar.status}
+                  </span>
+                </div>
+              </div>
+
+              {/* Floating Micro Badges Around Avatar */}
+              <motion.div
+                animate={{ y: [-6, 6, -6] }}
+                transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+                className="absolute top-2 -right-4 sm:right-2 px-3 py-1 rounded-xl glass-card border border-cyan-400/40 text-[11px] font-mono font-semibold text-cyan-300 shadow-lg shadow-cyan-500/20 flex items-center gap-1.5 z-20"
+              >
+                <Zap className="w-3.5 h-3.5 text-emerald-400 fill-emerald-400" />
+                <span>~60 FPS Virt</span>
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [6, -6, 6] }}
+                transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut' }}
+                className="absolute bottom-2 -left-4 sm:left-2 px-3 py-1 rounded-xl glass-card border border-indigo-400/40 text-[11px] font-mono font-semibold text-indigo-300 shadow-lg shadow-indigo-500/20 flex items-center gap-1.5 z-20"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Production LIMS</span>
+              </motion.div>
+
+            </motion.div>
+
           </div>
-        </motion.div>
 
-        {/* Dynamic Category Pill */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-morphism border border-cyan-400/30 mb-6 text-xs md:text-sm text-cyan-300 font-mono shadow-[0_0_15px_rgba(0,242,254,0.15)]"
-        >
-          <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
-          <span>Full-Stack Architect & Creative Technologist</span>
-        </motion.div>
+        </div>
 
-        {/* Main Name Heading with Liquid Gradient */}
-        <h1
-          ref={titleRef}
-          className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold mb-6 tracking-tight font-sora liquid-gradient drop-shadow-[0_10px_30px_rgba(0,242,254,0.2)]"
-        >
-          Vaigarai
-        </h1>
-
-        {/* Dynamic Subtitle */}
-        <p
-          ref={subtitleRef}
-          className="text-lg sm:text-xl md:text-2xl text-slate-300/90 mb-10 font-light max-w-3xl mx-auto leading-relaxed"
-        >
-          Inventing tomorrow&apos;s web, one line of code at a time. Crafting immersive 3D digital experiences, high-performance distributed systems, and modern interactive aesthetics.
-        </p>
-
-        {/* Interactive CTA Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.7 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
-        >
-          <a
-            href="#projects"
-            onClick={triggerConfetti}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold text-base shadow-[0_0_25px_rgba(0,242,254,0.4)] hover:shadow-[0_0_35px_rgba(0,242,254,0.7)] hover:scale-105 active:scale-95 transition-all duration-200 group"
-          >
-            <Rocket className="w-5 h-5 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" />
-            <span>🚀 Explore My Universe</span>
-          </a>
-
-          <button
-            onClick={handleDownloadResume}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl glass-morphism border border-purple-400/50 text-purple-200 hover:text-white hover:border-purple-300 hover:bg-purple-500/15 font-semibold text-base shadow-[0_0_20px_rgba(157,78,221,0.25)] hover:shadow-[0_0_30px_rgba(157,78,221,0.5)] hover:scale-105 active:scale-95 transition-all duration-200 group"
-          >
-            <Download className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
-            <span>📄 Download Resume</span>
-          </button>
-        </motion.div>
-
-        {/* Hero Mini Stats Badges */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto"
-        >
-          <div className="glass-card p-3 rounded-xl border border-white/10 hover:border-cyan-400/40 transition-colors">
-            <div className="text-2xl md:text-3xl font-bold font-sora text-cyan-400">5+</div>
-            <div className="text-xs text-white/60 font-mono mt-0.5">Years Experience</div>
-          </div>
-          <div className="glass-card p-3 rounded-xl border border-white/10 hover:border-purple-400/40 transition-colors">
-            <div className="text-2xl md:text-3xl font-bold font-sora text-purple-400">40+</div>
-            <div className="text-xs text-white/60 font-mono mt-0.5">Projects Delivered</div>
-          </div>
-          <div className="glass-card p-3 rounded-xl border border-white/10 hover:border-green-400/40 transition-colors">
-            <div className="text-2xl md:text-3xl font-bold font-sora text-green-400">1,247+</div>
-            <div className="text-xs text-white/60 font-mono mt-0.5">GitHub Commits</div>
-          </div>
-          <div className="glass-card p-3 rounded-xl border border-white/10 hover:border-pink-400/40 transition-colors">
-            <div className="text-2xl md:text-3xl font-bold font-sora text-pink-400">99.9%</div>
-            <div className="text-xs text-white/60 font-mono mt-0.5">Code Reliability</div>
-          </div>
-        </motion.div>
-
-        {/* Scroll Indicator Pill */}
+        {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 1 }}
-          className="mt-16 flex flex-col items-center justify-center gap-2"
+          transition={{ delay: 0.9, duration: 1 }}
+          className="mt-14 flex flex-col items-center justify-center gap-2"
         >
-          <span className="text-xs font-mono text-cyan-400/70 tracking-widest uppercase">Scroll Down</span>
+          <span className="text-[11px] font-mono text-cyan-400/70 tracking-widest uppercase">
+            {heroData.scrollIndicator.text}
+          </span>
           <a
-            href="#about"
-            className="w-6 h-10 border-2 border-cyan-400/40 rounded-full flex justify-center p-1 hover:border-cyan-300 transition-colors"
-            aria-label="Scroll to About"
+            href={heroData.scrollIndicator.href}
+            className="w-5 h-9 border-2 border-cyan-400/40 rounded-full flex justify-center p-1 hover:border-cyan-300 transition-colors"
+            aria-label={heroData.scrollIndicator.ariaLabel}
           >
             <motion.div
-              animate={{ y: [0, 14, 0] }}
+              animate={{ y: [0, 12, 0] }}
               transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-              className="w-1.5 h-3 bg-gradient-to-b from-cyan-400 to-purple-500 rounded-full shadow-[0_0_8px_#00f2fe]"
+              className="w-1 h-2.5 bg-gradient-to-b from-cyan-400 to-indigo-500 rounded-full shadow-[0_0_8px_#38bdf8]"
             />
           </a>
         </motion.div>
+
       </div>
     </section>
   );

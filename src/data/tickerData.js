@@ -1,0 +1,30 @@
+export const tickerData = {
+  line1: [
+    'REACT.JS',
+    'TYPESCRIPT',
+    'FRONTEND PERFORMANCE',
+    'TANSTACK QUERY',
+    'ZUSTAND & REDUX',
+    'TAILWIND CSS',
+    'REACT HOOK FORM',
+    'MODULAR ARCHITECTURE',
+  ],
+  line2: [
+    '~60 FPS RENDERING',
+    '90% RE-RENDERS REDUCED',
+    'LIST VIRTUALIZATION',
+    'LIMS ENTERPRISE PLATFORMS',
+    'LOGISTICS ERP',
+    'REST API INTEGRATION',
+    'CLEAN CODEBASE',
+  ],
+  line3: [
+    'ENTERPRISE SYSTEMS',
+    'SCALABLE STATE',
+    'HIGH-THROUGHPUT UI',
+    'SUB-SECOND LOAD TIME',
+    'SEAMLESS UX',
+  ],
+};
+
+export default tickerData;

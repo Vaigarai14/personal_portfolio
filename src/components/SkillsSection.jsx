@@ -1,43 +1,21 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Code2, Database, Cpu, Globe, Terminal, Box } from 'lucide-react';
+import { Sparkles, Database, Cpu, Globe } from 'lucide-react';
 import Skills3DOrbit from './canvas/Skills3DOrbit';
+import { skillsData } from '../data/skillsData';
 
-const skillCategories = [
-  {
-    title: 'Frontend & Creative WebGL',
-    icon: <Globe className="w-5 h-5 text-cyan-400" />,
-    skills: [
-      { name: 'React / Next.js', level: '95%' },
-      { name: 'Three.js / WebGL / GLSL', level: '90%' },
-      { name: 'TypeScript & JavaScript', level: '95%' },
-      { name: 'Framer Motion & Anime.js', level: '92%' },
-      { name: 'Tailwind CSS & Responsive UI', level: '98%' },
-    ]
-  },
-  {
-    title: 'Backend & Cloud Infrastructure',
-    icon: <Database className="w-5 h-5 text-purple-400" />,
-    skills: [
-      { name: 'Node.js / Express / NestJS', level: '92%' },
-      { name: 'Python / FastAPI / LangChain', level: '88%' },
-      { name: 'PostgreSQL, MongoDB, Redis', level: '90%' },
-      { name: 'Docker, Kubernetes, CI/CD', level: '85%' },
-      { name: 'AWS Cloud & Serverless', level: '86%' },
-    ]
-  },
-  {
-    title: 'Emerging Tech & Architecture',
-    icon: <Cpu className="w-5 h-5 text-green-400" />,
-    skills: [
-      { name: 'Rust & WebAssembly Core', level: '75%' },
-      { name: 'Microservices & Event Streams', level: '88%' },
-      { name: 'AI LLM Fine-Tuning & RAG', level: '82%' },
-      { name: 'Performance Optimization & SIMD', level: '85%' },
-      { name: 'Git, Linux Systems, DevSecOps', level: '94%' },
-    ]
+const getCategoryIcon = (iconType) => {
+  switch (iconType) {
+    case 'globe':
+      return <Globe className="w-5 h-5 text-cyan-400" />;
+    case 'database':
+      return <Database className="w-5 h-5 text-purple-400" />;
+    case 'cpu':
+      return <Cpu className="w-5 h-5 text-green-400" />;
+    default:
+      return <Sparkles className="w-5 h-5 text-cyan-400" />;
   }
-];
+};
 
 export default function SkillsSection() {
   return (
@@ -53,13 +31,13 @@ export default function SkillsSection() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-morphism border border-purple-400/30 text-xs font-mono text-purple-300 mb-4">
             <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-            <span>Interactive Capability Matrix</span>
+            <span>{skillsData.header.badge}</span>
           </div>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold font-sora liquid-gradient mb-6 tracking-tight">
-            Skills Matrix
+            {skillsData.header.title}
           </h2>
           <p className="text-lg md:text-xl text-slate-300/80 max-w-3xl mx-auto leading-relaxed">
-            Interactive 3D visualization of my technical stack and domain proficiencies. Drag the globe to interact.
+            {skillsData.header.description}
           </p>
         </motion.div>
 
@@ -75,7 +53,7 @@ export default function SkillsSection() {
           >
             <div className="w-full text-center mb-2">
               <span className="text-xs font-mono text-cyan-400 uppercase tracking-wider">
-                WebGL Interactive Core
+                {skillsData.canvas.badge}
               </span>
             </div>
             <Skills3DOrbit />
@@ -83,7 +61,7 @@ export default function SkillsSection() {
 
           {/* Skill Breakdown Column */}
           <div className="lg:col-span-7 space-y-6">
-            {skillCategories.map((cat, cIdx) => (
+            {skillsData.skillCategories.map((cat, cIdx) => (
               <motion.div
                 key={cat.title}
                 initial={{ opacity: 0, x: 30 }}
@@ -94,7 +72,7 @@ export default function SkillsSection() {
               >
                 <div className="flex items-center gap-2.5 mb-4">
                   <div className="p-2 rounded-lg bg-white/5 border border-white/10">
-                    {cat.icon}
+                    {getCategoryIcon(cat.iconType)}
                   </div>
                   <h3 className="text-lg font-bold font-sora text-white">{cat.title}</h3>
                 </div>

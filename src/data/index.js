@@ -1,0 +1,10 @@
+export { navbarData } from './navbarData';
+export { heroData } from './heroData';
+export { aboutData } from './aboutData';
+export { projectsData } from './projectsData';
+export { skillsData } from './skillsData';
+export { blogData } from './blogData';
+export { contactData } from './contactData';
+export { footerData } from './footerData';
+export { experienceData } from './experienceData';
+export { tickerData } from './tickerData';

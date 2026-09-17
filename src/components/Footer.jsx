@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowUp, Heart, Sparkles } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
+import { footerData } from '../data/footerData';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -16,14 +17,14 @@ export default function Footer() {
           {/* Brand & Note */}
           <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-400 to-purple-600 flex items-center justify-center font-mono font-bold text-black text-sm">
-              V
+              {footerData.logoLetter}
             </div>
             <div>
               <p className="text-sm font-medium text-slate-300">
-                © {new Date().getFullYear()} Vaigarai. Built with cutting-edge 3D web technology.
+                © {new Date().getFullYear()} {footerData.copyrightSuffix}
               </p>
               <p className="text-xs text-slate-500 font-mono">
-                Three.js • Framer Motion • Anime.js • WebGL • Tailwind CSS
+                {footerData.techStackText}
               </p>
             </div>
           </div>
@@ -31,15 +32,17 @@ export default function Footer() {
           {/* Central Pulsing Bar */}
           <div className="flex items-center gap-3">
             <div className="w-20 h-1 rounded-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-pulse" />
-            <span className="text-xs font-mono text-cyan-300/80">60 FPS WebGL Engine</span>
+            <span className="text-xs font-mono text-cyan-300/80">
+              {footerData.engineStatusText}
+            </span>
           </div>
 
           {/* Back to top button */}
           <button
             onClick={scrollToTop}
-            className="p-3 rounded-full glass-morphism border border-white/10 text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,242,254,0.4)] transition-all"
-            aria-label="Back to top"
-            title="Scroll to top"
+            className="p-3 rounded-full glass-morphism border border-white/10 text-slate-300 hover:text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,242,254,0.4)] transition-all cursor-pointer"
+            aria-label={footerData.backToTop.ariaLabel}
+            title={footerData.backToTop.title}
           >
             <ArrowUp className="w-4 h-4" />
           </button>

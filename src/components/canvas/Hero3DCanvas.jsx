@@ -8,134 +8,159 @@ export default function Hero3DCanvas() {
     const currentMount = mountRef.current;
     if (!currentMount) return;
 
-    // Scene, Camera, Renderer
+    // --- Scene, Camera, Renderer ---
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
-      60,
+      50,
       currentMount.clientWidth / currentMount.clientHeight,
       0.1,
       1000
     );
-    camera.position.z = 80;
+    camera.position.set(0, 0, 38);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: 'high-performance'
+    });
     renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     currentMount.appendChild(renderer.domElement);
 
-    // Particle Galaxy System
-    const particleCount = 2800;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    const scales = new Float32Array(particleCount);
+    // --- Studio Ambient Lighting ---
+    const ambientLight = new THREE.AmbientLight(0x0a1128, 2.0);
+    scene.add(ambientLight);
 
-    const colorCyan = new THREE.Color(0x00f2fe);
-    const colorPurple = new THREE.Color(0x9d4edd);
-    const colorPink = new THREE.Color(0xff007f);
-    const colorWhite = new THREE.Color(0xffffff);
+    const cyanLight = new THREE.PointLight(0x00f2fe, 3.5, 60);
+    cyanLight.position.set(20, 15, 20);
+    scene.add(cyanLight);
 
-    for (let i = 0; i < particleCount; i++) {
-      // Cosmic spiral / spherical distribution
-      const radius = THREE.MathUtils.randFloat(15, 120);
-      const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
-      const phi = THREE.MathUtils.randFloat(-Math.PI / 2, Math.PI / 2);
+    const purpleLight = new THREE.PointLight(0x9d4edd, 3.5, 60);
+    purpleLight.position.set(-20, -15, 20);
+    scene.add(purpleLight);
 
-      const x = radius * Math.cos(theta) * Math.cos(phi);
-      const y = (radius * 0.4) * Math.sin(phi) + Math.sin(theta * 3) * 6;
-      const z = radius * Math.sin(theta) * Math.cos(phi);
-
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
-
-      // Color variation based on radius & angle
-      let mixedColor;
-      const factor = Math.sin(theta + radius * 0.05);
-      if (factor > 0.4) {
-        mixedColor = colorCyan.clone().lerp(colorWhite, Math.random() * 0.4);
-      } else if (factor > -0.3) {
-        mixedColor = colorPurple.clone().lerp(colorPink, Math.random() * 0.3);
-      } else {
-        mixedColor = colorPink.clone().lerp(colorPurple, Math.random() * 0.5);
-      }
-
-      colors[i * 3] = mixedColor.r;
-      colors[i * 3 + 1] = mixedColor.g;
-      colors[i * 3 + 2] = mixedColor.b;
-
-      scales[i] = Math.random() * 1.8 + 0.6;
-    }
-
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    // Particle texture generator (soft glowing circular orb)
-    const canvas = document.createElement('canvas');
-    canvas.width = 32;
-    canvas.height = 32;
-    const ctx = canvas.getContext('2d');
-    const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-    gradient.addColorStop(0, 'rgba(255,255,255,1)');
-    gradient.addColorStop(0.3, 'rgba(0, 242, 254, 0.8)');
-    gradient.addColorStop(0.7, 'rgba(157, 78, 221, 0.2)');
-    gradient.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 32, 32);
-
-    const particleTexture = new THREE.CanvasTexture(canvas);
-
-    const material = new THREE.PointsMaterial({
-      size: 1.8,
-      vertexColors: true,
-      map: particleTexture,
-      transparent: true,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-
-    // Orbiting rings
-    const ringGroup = new THREE.Group();
-    const ringGeom = new THREE.RingGeometry(35, 35.4, 64);
-    const ringMat = new THREE.MeshBasicMaterial({
+    // --- 1. Sleek Undulating Digital Wave Grid (Floor / Background) ---
+    const gridCols = 45;
+    const gridRows = 30;
+    const gridGeometry = new THREE.PlaneGeometry(90, 60, gridCols - 1, gridRows - 1);
+    
+    // Wireframe Mesh with smooth glowing gradient
+    const gridMaterial = new THREE.MeshBasicMaterial({
       color: 0x00f2fe,
-      side: THREE.DoubleSide,
+      wireframe: true,
       transparent: true,
-      opacity: 0.25,
-      blending: THREE.AdditiveBlending
+      opacity: 0.14,
     });
-    const ring1 = new THREE.Mesh(ringGeom, ringMat);
-    ring1.rotation.x = Math.PI / 3;
-    ringGroup.add(ring1);
+    const waveGrid = new THREE.Mesh(gridGeometry, gridMaterial);
+    waveGrid.rotation.x = -Math.PI / 2.6;
+    waveGrid.position.set(0, -10, -5);
+    scene.add(waveGrid);
 
-    const ringGeom2 = new THREE.RingGeometry(48, 48.3, 64);
-    const ringMat2 = new THREE.MeshBasicMaterial({
-      color: 0x9d4edd,
-      side: THREE.DoubleSide,
+    // --- 2. Floating Cyber Polyhedron & Orbital Tech Rings ---
+    const centralGroup = new THREE.Group();
+    centralGroup.position.set(0, 3, -4);
+    scene.add(centralGroup);
+
+    // Inner Glowing Icosahedron (Geometric Tech Core)
+    const icoGeom = new THREE.IcosahedronGeometry(6.5, 1);
+    const icoMat = new THREE.MeshBasicMaterial({
+      color: 0x00f2fe,
+      wireframe: true,
       transparent: true,
-      opacity: 0.18,
-      blending: THREE.AdditiveBlending
+      opacity: 0.35,
     });
-    const ring2 = new THREE.Mesh(ringGeom2, ringMat2);
+    const icosahedron = new THREE.Mesh(icoGeom, icoMat);
+    centralGroup.add(icosahedron);
+
+    // Subtle inner solid core with soft glow
+    const coreGeom = new THREE.IcosahedronGeometry(4.2, 0);
+    const coreMat = new THREE.MeshStandardMaterial({
+      color: 0x110826,
+      emissive: 0x9d4edd,
+      emissiveIntensity: 0.6,
+      roughness: 0.3,
+      metalness: 0.8,
+      transparent: true,
+      opacity: 0.85,
+    });
+    const coreMesh = new THREE.Mesh(coreGeom, coreMat);
+    centralGroup.add(coreMesh);
+
+    // Orbital Ring 1 (Cyan Precision Ring)
+    const ring1Geom = new THREE.TorusGeometry(10.5, 0.08, 16, 100);
+    const ring1Mat = new THREE.MeshBasicMaterial({
+      color: 0x00f2fe,
+      transparent: true,
+      opacity: 0.45,
+    });
+    const ring1 = new THREE.Mesh(ring1Geom, ring1Mat);
+    ring1.rotation.x = Math.PI / 3;
+    centralGroup.add(ring1);
+
+    // Orbital Ring 2 (Purple Precision Ring)
+    const ring2Geom = new THREE.TorusGeometry(12.5, 0.06, 16, 100);
+    const ring2Mat = new THREE.MeshBasicMaterial({
+      color: 0x9d4edd,
+      transparent: true,
+      opacity: 0.35,
+    });
+    const ring2 = new THREE.Mesh(ring2Geom, ring2Mat);
     ring2.rotation.x = -Math.PI / 4;
     ring2.rotation.y = Math.PI / 6;
-    ringGroup.add(ring2);
+    centralGroup.add(ring2);
 
-    scene.add(ringGroup);
+    // Orbital Ring 3 (Pink Accent Ring)
+    const ring3Geom = new THREE.TorusGeometry(14.5, 0.04, 16, 100);
+    const ring3Mat = new THREE.MeshBasicMaterial({
+      color: 0xff007f,
+      transparent: true,
+      opacity: 0.25,
+    });
+    const ring3 = new THREE.Mesh(ring3Geom, ring3Mat);
+    ring3.rotation.x = Math.PI / 6;
+    ring3.rotation.z = Math.PI / 4;
+    centralGroup.add(ring3);
 
-    // Ambient floating lights
-    const light1 = new THREE.PointLight(0x00f2fe, 2, 200);
-    light1.position.set(30, 20, 40);
-    scene.add(light1);
+    // --- 3. Delicate Floating Cyber Dust Particles (Minimal & Unobtrusive) ---
+    const starCount = 350; // Clean, sparse, crisp
+    const starGeom = new THREE.BufferGeometry();
+    const starPositions = new Float32Array(starCount * 3);
+    const starColors = new Float32Array(starCount * 3);
 
-    const light2 = new THREE.PointLight(0x9d4edd, 2, 200);
-    light2.position.set(-30, -20, 30);
-    scene.add(light2);
+    const cyanColor = new THREE.Color(0x00f2fe);
+    const purpleColor = new THREE.Color(0x9d4edd);
+    const whiteColor = new THREE.Color(0xffffff);
 
-    // Mouse parallax tracking
+    for (let i = 0; i < starCount; i++) {
+      const radius = THREE.MathUtils.randFloat(15, 65);
+      const theta = THREE.MathUtils.randFloat(0, Math.PI * 2);
+      const phi = THREE.MathUtils.randFloat(-Math.PI / 2.2, Math.PI / 2.2);
+
+      starPositions[i * 3] = radius * Math.cos(theta) * Math.cos(phi);
+      starPositions[i * 3 + 1] = radius * Math.sin(phi);
+      starPositions[i * 3 + 2] = radius * Math.sin(theta) * Math.cos(phi) - 10;
+
+      const rand = Math.random();
+      const col = rand > 0.6 ? cyanColor : (rand > 0.3 ? purpleColor : whiteColor);
+      starColors[i * 3] = col.r;
+      starColors[i * 3 + 1] = col.g;
+      starColors[i * 3 + 2] = col.b;
+    }
+
+    starGeom.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+    starGeom.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
+
+    const starMaterial = new THREE.PointsMaterial({
+      size: 0.9,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.6,
+      blending: THREE.AdditiveBlending,
+    });
+    const starPoints = new THREE.Points(starGeom, starMaterial);
+    scene.add(starPoints);
+
+    // --- Interactive Mouse Tracking with Spring Damping ---
     let targetX = 0;
     let targetY = 0;
     let currentX = 0;
@@ -143,79 +168,141 @@ export default function Hero3DCanvas() {
 
     const handleMouseMove = (e) => {
       const { innerWidth, innerHeight } = window;
-      targetX = (e.clientX / innerWidth - 0.5) * 20;
-      targetY = (e.clientY / innerHeight - 0.5) * 20;
+      targetX = (e.clientX / innerWidth - 0.5) * 2;
+      targetY = (e.clientY / innerHeight - 0.5) * 2;
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        const { innerWidth, innerHeight } = window;
+        targetX = (touch.clientX / innerWidth - 0.5) * 2;
+        targetY = (touch.clientY / innerHeight - 0.5) * 2;
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
-    // Scroll parallax tracking
+    // Scroll Parallax Tracking
     let scrollY = 0;
     const handleScroll = () => {
       scrollY = window.scrollY;
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Animation Loop
+    // --- Animation Loop ---
     let animationFrameId;
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
+    const positionAttribute = gridGeometry.attributes.position;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
-      // Smooth mouse lerp
+      // Smooth Spring Lerp for Cursor Parallax
       currentX += (targetX - currentX) * 0.05;
       currentY += (targetY - currentY) * 0.05;
 
-      particles.rotation.y = elapsedTime * 0.04 + currentX * 0.02;
-      particles.rotation.x = Math.sin(elapsedTime * 0.03) * 0.1 + currentY * 0.02;
-      particles.position.y = -scrollY * 0.03;
+      // 1. Undulate the Cyber Wave Grid
+      for (let i = 0; i < positionAttribute.count; i++) {
+        const u = i % gridCols;
+        const v = Math.floor(i / gridCols);
+        const z =
+          Math.sin(elapsedTime * 1.5 + u * 0.3) * 1.4 +
+          Math.cos(elapsedTime * 1.2 + v * 0.4) * 1.2;
+        positionAttribute.setZ(i, z);
+      }
+      positionAttribute.needsUpdate = true;
 
-      ringGroup.rotation.z = elapsedTime * 0.05;
-      ringGroup.rotation.y = elapsedTime * 0.03 + currentX * 0.01;
-      ringGroup.position.y = -scrollY * 0.02;
+      // 2. Rotate Geometric Core & Orbital Rings
+      icosahedron.rotation.x = elapsedTime * 0.25;
+      icosahedron.rotation.y = elapsedTime * 0.35 + currentX * 0.5;
+      coreMesh.rotation.x = -elapsedTime * 0.3;
+      coreMesh.rotation.y = -elapsedTime * 0.2 + currentY * 0.4;
 
-      camera.position.x = currentX * 0.5;
-      camera.position.y = -currentY * 0.5;
-      camera.lookAt(scene.position);
+      ring1.rotation.z = elapsedTime * 0.3;
+      ring1.rotation.y = elapsedTime * 0.2 + currentX * 0.3;
+
+      ring2.rotation.z = -elapsedTime * 0.25;
+      ring2.rotation.x = -Math.PI / 4 + currentY * 0.2;
+
+      ring3.rotation.z = elapsedTime * 0.2;
+      ring3.rotation.y = Math.PI / 6 - currentX * 0.2;
+
+      // Central group subtle floating wave & scroll displacement
+      centralGroup.position.y = 3 + Math.sin(elapsedTime * 1.4) * 0.6 - scrollY * 0.015;
+      centralGroup.position.x = currentX * 1.5;
+
+      // Starfield gentle rotation
+      starPoints.rotation.y = elapsedTime * 0.02 + currentX * 0.05;
+      starPoints.rotation.x = Math.sin(elapsedTime * 0.015) * 0.05 - currentY * 0.05;
+
+      // Camera responsive micro-parallax
+      camera.position.x = currentX * 2.0;
+      camera.position.y = -currentY * 1.5;
+      camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // Resize Handler
+    // --- Responsive Resizing ---
     const handleResize = () => {
       if (!currentMount) return;
       const width = currentMount.clientWidth;
       const height = currentMount.clientHeight;
       camera.aspect = width / height;
+
+      if (width < 768) {
+        camera.position.z = 46;
+        centralGroup.scale.set(0.75, 0.75, 0.75);
+      } else {
+        camera.position.z = 38;
+        centralGroup.scale.set(1.0, 1.0, 1.0);
+      }
+
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     };
 
+    handleResize();
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
+
       if (currentMount && renderer.domElement) {
         currentMount.removeChild(renderer.domElement);
       }
-      geometry.dispose();
-      material.dispose();
-      particleTexture.dispose();
+
+      gridGeometry.dispose();
+      gridMaterial.dispose();
+      icoGeom.dispose();
+      icoMat.dispose();
+      coreGeom.dispose();
+      coreMat.dispose();
+      ring1Geom.dispose();
+      ring1Mat.dispose();
+      ring2Geom.dispose();
+      ring2Mat.dispose();
+      ring3Geom.dispose();
+      ring3Mat.dispose();
+      starGeom.dispose();
+      starMaterial.dispose();
       renderer.dispose();
     };
   }, []);
 
   return (
-    <div 
-      ref={mountRef} 
-      className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden" 
+    <div
+      ref={mountRef}
+      className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden"
       aria-hidden="true"
     />
   );

@@ -13,19 +13,41 @@ import {
   Github,
   Linkedin,
   Twitter,
-  MessageSquare,
-  Flame,
-  ArrowRight
+  MessageSquare
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { contactData } from '../data/contactData';
 
-const aiResponses = {
-  'Tell me about Vaigarai\'s experience':
-    'Vaigarai has 5+ years of experience engineering high-performance full-stack architectures, real-time distributed backends, and award-winning 3D WebGL user interfaces across tech startups and scale-ups.',
-  'What technologies does he use?':
-    'His primary stack includes React, Next.js, Three.js, TypeScript, Node.js, Python, Rust, Docker, WebGL/GLSL shaders, and cloud infrastructure (AWS/GCP).',
-  'Schedule a meeting':
-    'Fantastic! You can send a direct proposal through the message form on the left or email vaigarai.tech@example.com to lock in a discovery call.'
+const getContactIcon = (iconType) => {
+  switch (iconType) {
+    case 'mail':
+      return <Mail className="w-4 h-4 text-cyan-400" />;
+    case 'phone':
+      return <Phone className="w-4 h-4 text-green-400" />;
+    case 'mapPin':
+      return <MapPin className="w-4 h-4 text-purple-400" />;
+    default:
+      return <Mail className="w-4 h-4 text-cyan-400" />;
+  }
+};
+
+const getSocialIcon = (iconName, colorClass) => {
+  switch (iconName) {
+    case 'github':
+      return <Github className={`w-4 h-4 text-slate-300 ${colorClass}`} />;
+    case 'linkedin':
+      return <Linkedin className={`w-4 h-4 text-slate-300 ${colorClass}`} />;
+    case 'mail':
+      return <Mail className={`w-4 h-4 text-slate-300 ${colorClass}`} />;
+    case 'phone':
+      return <Phone className={`w-4 h-4 text-slate-300 ${colorClass}`} />;
+    case 'twitter':
+      return <Twitter className={`w-4 h-4 text-slate-300 ${colorClass}`} />;
+    case 'discord':
+      return <MessageSquare className={`w-4 h-4 text-slate-300 ${colorClass}`} />;
+    default:
+      return <MessageSquare className={`w-4 h-4 text-slate-300 ${colorClass}`} />;
+  }
 };
 
 export default function ContactSection() {
@@ -38,7 +60,7 @@ export default function ContactSection() {
   const [aiHistory, setAiHistory] = useState([
     {
       sender: 'ai',
-      text: "Hi! I'm Vaigarai's AI interactive assistant. I can answer questions about his tech stack, architectural experience, or help initiate a project collaboration. What would you like to know?"
+      text: contactData.aiAssistant.initialMessage
     }
   ]);
   const [isAiTyping, setIsAiTyping] = useState(false);
@@ -66,7 +88,10 @@ export default function ContactSection() {
       setIsListening(false);
       setFormData((prev) => ({
         ...prev,
-        message: prev.message + (prev.message ? ' ' : '') + 'Looking forward to collaborating on an innovative 3D web platform!'
+        message:
+          prev.message +
+          (prev.message ? ' ' : '') +
+          contactData.form.voiceInput.simulatedText
       }));
     }, 1800);
   };
@@ -78,7 +103,9 @@ export default function ContactSection() {
     setIsAiTyping(true);
 
     setTimeout(() => {
-      const response = aiResponses[question] || 'Thank you for asking! Vaigarai would love to connect with you directly.';
+      const response =
+        contactData.aiAssistant.responses[question] ||
+        contactData.aiAssistant.defaultResponse;
       setAiHistory((prev) => [...prev, { sender: 'ai', text: response }]);
       setIsAiTyping(false);
     }, 700);
@@ -101,13 +128,13 @@ export default function ContactSection() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-morphism border border-cyan-400/30 text-xs font-mono text-cyan-300 mb-4">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Open for Opportunities & Consulting</span>
+            <span>{contactData.header.badge}</span>
           </div>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold font-sora liquid-gradient mb-6 tracking-tight">
-            Let&apos;s Connect
+            {contactData.header.title}
           </h2>
           <p className="text-lg md:text-xl text-slate-300/80 max-w-3xl mx-auto leading-relaxed">
-            Ready to bring visionary ideas into high-performance reality? Let&apos;s discuss how we can build something unforgettable together.
+            {contactData.header.description}
           </p>
         </motion.div>
 
@@ -123,7 +150,9 @@ export default function ContactSection() {
           >
             <div className="flex items-center gap-2.5 mb-6">
               <MessageSquare className="w-6 h-6 text-cyan-400" />
-              <h3 className="text-2xl font-bold font-sora text-white">Send a Message</h3>
+              <h3 className="text-2xl font-bold font-sora text-white">
+                {contactData.form.title}
+              </h3>
             </div>
 
             {isSubmitted ? (
@@ -133,46 +162,48 @@ export default function ContactSection() {
                 className="p-8 rounded-2xl bg-cyan-950/40 border border-cyan-400/40 text-center space-y-4"
               >
                 <CheckCircle2 className="w-16 h-16 text-cyan-400 mx-auto animate-bounce" />
-                <h4 className="text-2xl font-bold font-sora text-white">Message Transmitted!</h4>
+                <h4 className="text-2xl font-bold font-sora text-white">
+                  {contactData.form.success.title}
+                </h4>
                 <p className="text-slate-300 text-sm leading-relaxed">
-                  Thank you for reaching out. I have received your message and will respond promptly within 24 hours.
+                  {contactData.form.success.message}
                 </p>
                 <button
                   onClick={() => {
                     setIsSubmitted(false);
                     setFormData({ name: '', email: '', message: '' });
                   }}
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 font-semibold text-xs uppercase tracking-wider text-white shadow-lg"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 font-semibold text-xs uppercase tracking-wider text-white shadow-lg cursor-pointer"
                 >
-                  Send Another Message
+                  {contactData.form.success.resetButtonText}
                 </button>
               </motion.div>
             ) : (
               <form onSubmit={handleFormSubmit} className="space-y-4">
                 <div>
                   <label className="block text-xs font-mono text-slate-300 mb-1.5 uppercase tracking-wider">
-                    Your Name
+                    {contactData.form.nameLabel}
                   </label>
                   <input
                     type="text"
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="Alex Morgan"
+                    placeholder={contactData.form.namePlaceholder}
                     className="w-full px-4 py-3 rounded-xl bg-black/50 border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-mono text-slate-300 mb-1.5 uppercase tracking-wider">
-                    Your Email Address
+                    {contactData.form.emailLabel}
                   </label>
                   <input
                     type="email"
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="alex@company.com"
+                    placeholder={contactData.form.emailPlaceholder}
                     className="w-full px-4 py-3 rounded-xl bg-black/50 border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
                   />
                 </div>
@@ -180,12 +211,12 @@ export default function ContactSection() {
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className="block text-xs font-mono text-slate-300 uppercase tracking-wider">
-                      Your Message
+                      {contactData.form.messageLabel}
                     </label>
                     <button
                       type="button"
                       onClick={handleVoiceSim}
-                      className={`inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded transition-all ${
+                      className={`inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded transition-all cursor-pointer ${
                         isListening
                           ? 'bg-red-500/20 text-red-400 border border-red-400/40 animate-pulse'
                           : 'text-slate-400 hover:text-cyan-300'
@@ -195,12 +226,12 @@ export default function ContactSection() {
                       {isListening ? (
                         <>
                           <MicOff className="w-3 h-3" />
-                          <span>Listening...</span>
+                          <span>{contactData.form.voiceInput.listening}</span>
                         </>
                       ) : (
                         <>
                           <Mic className="w-3 h-3" />
-                          <span>Voice Input</span>
+                          <span>{contactData.form.voiceInput.label}</span>
                         </>
                       )}
                     </button>
@@ -210,7 +241,7 @@ export default function ContactSection() {
                     rows={4}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell me about your vision, timeline, and architectural requirements..."
+                    placeholder={contactData.form.messagePlaceholder}
                     className="w-full px-4 py-3 rounded-xl bg-black/50 border border-white/10 text-white placeholder:text-slate-500 text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all resize-none"
                   />
                 </div>
@@ -223,12 +254,12 @@ export default function ContactSection() {
                   {isSubmitting ? (
                     <span className="inline-flex items-center gap-2">
                       <Sparkles className="w-4 h-4 animate-spin" />
-                      Encrypting & Transmitting...
+                      {contactData.form.submitButton.submittingText}
                     </span>
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      <span>Send Message</span>
+                      <span>{contactData.form.submitButton.defaultText}</span>
                     </>
                   )}
                 </button>
@@ -248,23 +279,15 @@ export default function ContactSection() {
             >
               <h4 className="text-base font-bold font-sora text-white mb-2 flex items-center gap-2">
                 <Phone className="w-4 h-4 text-green-400" />
-                <span>Direct Contact Information</span>
+                <span>{contactData.directContact.title}</span>
               </h4>
 
-              <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 text-xs font-mono text-slate-200">
-                <Mail className="w-4 h-4 text-cyan-400" />
-                <span>vaigarai.tech@example.com</span>
-              </div>
-
-              <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 text-xs font-mono text-slate-200">
-                <Phone className="w-4 h-4 text-green-400" />
-                <span>+1 (555) 123-4567</span>
-              </div>
-
-              <div className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 text-xs font-mono text-slate-200">
-                <MapPin className="w-4 h-4 text-purple-400" />
-                <span>San Francisco, CA / Remote Global</span>
-              </div>
+              {contactData.directContact.items.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 text-xs font-mono text-slate-200">
+                  {getContactIcon(item.iconType)}
+                  <span>{item.value}</span>
+                </div>
+              ))}
             </motion.div>
 
             {/* AI Assistant Chatbot Simulation */}
@@ -281,10 +304,12 @@ export default function ContactSection() {
                     <Bot className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold font-sora text-white">AI Portfolio Assistant</h4>
+                    <h4 className="text-sm font-bold font-sora text-white">
+                      {contactData.aiAssistant.title}
+                    </h4>
                     <span className="text-[10px] font-mono text-green-400 flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-ping inline-block" />
-                      Live Neural Model
+                      {contactData.aiAssistant.status}
                     </span>
                   </div>
                 </div>
@@ -307,20 +332,22 @@ export default function ContactSection() {
                 {isAiTyping && (
                   <div className="p-2 rounded-xl bg-white/5 text-slate-400 text-xs italic flex items-center gap-1 font-mono">
                     <Sparkles className="w-3 h-3 animate-spin text-cyan-400" />
-                    <span>Neural synthesis typing...</span>
+                    <span>{contactData.aiAssistant.typingText}</span>
                   </div>
                 )}
               </div>
 
               {/* Quick Prompt Triggers */}
               <div className="space-y-1.5">
-                <div className="text-[11px] font-mono text-slate-400">Ask the AI:</div>
+                <div className="text-[11px] font-mono text-slate-400">
+                  {contactData.aiAssistant.promptLabel}
+                </div>
                 <div className="flex flex-wrap gap-1.5">
-                  {Object.keys(aiResponses).map((q) => (
+                  {Object.keys(contactData.aiAssistant.responses).map((q) => (
                     <button
                       key={q}
                       onClick={() => handleAiQuestion(q)}
-                      className="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-white/5 hover:bg-cyan-950/60 border border-white/10 hover:border-cyan-400/50 text-slate-300 hover:text-cyan-300 transition-all text-left"
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-white/5 hover:bg-cyan-950/60 border border-white/10 hover:border-cyan-400/50 text-slate-300 hover:text-cyan-300 transition-all text-left cursor-pointer"
                     >
                       {q}
                     </button>
@@ -337,44 +364,22 @@ export default function ContactSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="glass-card p-6 rounded-2xl border border-white/10"
             >
-              <h4 className="text-sm font-bold font-sora text-white mb-3">Connect Online</h4>
+              <h4 className="text-sm font-bold font-sora text-white mb-3">
+                {contactData.socials.title}
+              </h4>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                <a
-                  href="https://github.com/Vaigarai14"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-3 rounded-xl glass-morphism border border-white/10 hover:border-cyan-400 hover:text-cyan-300 flex items-center justify-center gap-2 text-xs font-mono transition-all group"
-                >
-                  <Github className="w-4 h-4 text-slate-300 group-hover:text-cyan-400" />
-                  <span>GitHub</span>
-                </a>
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-3 rounded-xl glass-morphism border border-white/10 hover:border-blue-400 hover:text-blue-300 flex items-center justify-center gap-2 text-xs font-mono transition-all group"
-                >
-                  <Linkedin className="w-4 h-4 text-slate-300 group-hover:text-blue-400" />
-                  <span>LinkedIn</span>
-                </a>
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-3 rounded-xl glass-morphism border border-white/10 hover:border-cyan-400 hover:text-cyan-300 flex items-center justify-center gap-2 text-xs font-mono transition-all group"
-                >
-                  <Twitter className="w-4 h-4 text-slate-300 group-hover:text-cyan-400" />
-                  <span>Twitter</span>
-                </a>
-                <a
-                  href="https://discord.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="p-3 rounded-xl glass-morphism border border-white/10 hover:border-purple-400 hover:text-purple-300 flex items-center justify-center gap-2 text-xs font-mono transition-all group"
-                >
-                  <MessageSquare className="w-4 h-4 text-slate-300 group-hover:text-purple-400" />
-                  <span>Discord</span>
-                </a>
+                {contactData.socials.links.map((link) => (
+                  <a
+                    key={link.name}
+                    href={link.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`p-3 rounded-xl glass-morphism border border-white/10 ${link.hoverBorder} flex items-center justify-center gap-2 text-xs font-mono transition-all group`}
+                  >
+                    {getSocialIcon(link.icon, link.hoverIcon)}
+                    <span>{link.name}</span>
+                  </a>
+                ))}
               </div>
             </motion.div>
           </div>

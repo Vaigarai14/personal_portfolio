@@ -8,22 +8,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#05070f',
-        card: 'rgba(15, 23, 42, 0.65)',
-        border: 'rgba(255, 255, 255, 0.1)',
+        background: '#030712',
+        card: 'rgba(12, 18, 38, 0.65)',
+        border: 'rgba(255, 255, 255, 0.08)',
         primary: {
-          DEFAULT: '#00f2fe',
-          foreground: '#05070f',
+          DEFAULT: '#38bdf8',
+          foreground: '#030712',
         },
         secondary: {
-          DEFAULT: '#9d4edd',
+          DEFAULT: '#818cf8',
           foreground: '#ffffff',
         },
         accent: {
-          cyan: '#00f2fe',
-          purple: '#9d4edd',
-          magenta: '#ff007f',
-          green: '#00ff87',
+          cyan: '#38bdf8',
+          blue: '#0ea5e9',
+          indigo: '#6366f1',
+          violet: '#8b5cf6',
+          green: '#10b981',
         }
       },
       fontFamily: {

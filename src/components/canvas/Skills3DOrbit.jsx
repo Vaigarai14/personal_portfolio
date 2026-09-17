@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { skillsData } from '../../data/skillsData';
 
 export default function Skills3DOrbit() {
   const mountRef = useRef(null);
@@ -186,7 +187,7 @@ export default function Skills3DOrbit() {
     <div className="relative w-full h-[400px] md:h-[500px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none">
       <div ref={mountRef} className="w-full h-full" />
       <div className="absolute bottom-2 text-xs text-cyan-400/70 font-mono tracking-wider pointer-events-none bg-black/40 px-3 py-1 rounded-full border border-cyan-400/20">
-        🖱️ Drag to rotate 3D core
+        {skillsData.canvas.dragHint}
       </div>
     </div>
   );

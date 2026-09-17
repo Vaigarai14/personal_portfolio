@@ -3,10 +3,10 @@ import { motion, useScroll, useSpring } from 'framer-motion';
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
+import ScrollTextLines from './components/ScrollTextLines';
 import AboutSection from './components/AboutSection';
 import ProjectsSection from './components/ProjectsSection';
 import SkillsSection from './components/SkillsSection';
-import BlogSection from './components/BlogSection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 
@@ -88,10 +88,10 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#05070f] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div className="relative min-h-screen bg-[#030712] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
       {/* Scroll Progress Bar at very top */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 origin-left z-[100] shadow-[0_0_10px_#00f2fe]"
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-500 origin-left z-[100] shadow-[0_0_10px_rgba(56,189,248,0.6)]"
         style={{ scaleX }}
       />
 
@@ -104,10 +104,10 @@ export default function App() {
       {/* Main Content Sections */}
       <main className="relative z-10">
         <HeroSection />
+        <ScrollTextLines />
         <AboutSection />
         <ProjectsSection />
         <SkillsSection />
-        <BlogSection />
         <ContactSection />
       </main>
 

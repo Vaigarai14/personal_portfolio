@@ -1,54 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, Calendar, Clock, ExternalLink, Sparkles, Star, Github } from 'lucide-react';
-
-const articles = [
-  {
-    title: 'The Future of Web Development: WebAssembly and Beyond',
-    description: 'Exploring how WebAssembly is revolutionizing web performance, threading, and opening high-compute possibilities for modern browsers.',
-    date: 'Jan 15, 2025',
-    readTime: '8 min read',
-    tags: ['WebAssembly', 'Performance', 'Future Tech'],
-    url: '#'
-  },
-  {
-    title: 'Building Immersive 3D Experiences with Three.js & Shaders',
-    description: 'A comprehensive guide to crafting high-performance, responsive 3D web scenes using custom GLSL shaders and additive blending particles.',
-    date: 'Jan 10, 2025',
-    readTime: '12 min read',
-    tags: ['Three.js', '3D Graphics', 'WebGL'],
-    url: '#'
-  },
-  {
-    title: 'AI-Powered Full-Stack Engineering: Tools Shaping Tomorrow',
-    description: 'How autonomous coding agents, LLM pipelines, and neural synthesis are redefining software architecture and rapid prototyping.',
-    date: 'Jan 05, 2025',
-    readTime: '6 min read',
-    tags: ['AI Agents', 'Development', 'Architecture'],
-    url: '#'
-  }
-];
-
-const openSourceProjects = [
-  {
-    name: 'react-3d-universe',
-    stars: 234,
-    description: 'A performant 3D particle universe component built for React & Three.js applications with dynamic lighting.',
-    tag: 'TypeScript'
-  },
-  {
-    name: 'webgl-particle-system',
-    stars: 156,
-    description: 'High-performance WebGL 2.0 particle engine with customizable physics vectors and attraction forces.',
-    tag: 'JavaScript'
-  },
-  {
-    name: 'ai-code-copilot-engine',
-    stars: 89,
-    description: 'Lightweight context retrieval and indexing pipeline for AI-assisted code generation in IDEs.',
-    tag: 'TypeScript'
-  }
-];
+import { blogData } from '../data/blogData';
 
 export default function BlogSection() {
   return (
@@ -64,13 +17,13 @@ export default function BlogSection() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-morphism border border-cyan-400/30 text-xs font-mono text-cyan-300 mb-4">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Knowledge Sharing & Community</span>
+            <span>{blogData.header.badge}</span>
           </div>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold font-sora liquid-gradient mb-6 tracking-tight">
-            Articles & Open Source
+            {blogData.header.title}
           </h2>
           <p className="text-lg md:text-xl text-slate-300/80 max-w-3xl mx-auto leading-relaxed">
-            Sharing technical insights through in-depth publications and contributing freely to the developer ecosystem.
+            {blogData.header.description}
           </p>
         </motion.div>
 
@@ -79,10 +32,10 @@ export default function BlogSection() {
           <div className="space-y-6">
             <h3 className="text-2xl font-bold font-sora text-white flex items-center gap-2 mb-4">
               <BookOpen className="w-6 h-6 text-cyan-400" />
-              <span>Latest Articles</span>
+              <span>{blogData.articlesSection.title}</span>
             </h3>
 
-            {articles.map((art, idx) => (
+            {blogData.articlesSection.articles.map((art, idx) => (
               <motion.div
                 key={art.title}
                 initial={{ opacity: 0, y: 30 }}
@@ -123,7 +76,7 @@ export default function BlogSection() {
                     href={art.url}
                     className="inline-flex items-center gap-1 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
                   >
-                    <span>Read More</span>
+                    <span>{blogData.articlesSection.readMoreText}</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 </div>
@@ -135,10 +88,10 @@ export default function BlogSection() {
           <div className="space-y-6">
             <h3 className="text-2xl font-bold font-sora text-white flex items-center gap-2 mb-4">
               <Github className="w-6 h-6 text-purple-400" />
-              <span>Open Source Contributions</span>
+              <span>{blogData.openSourceSection.title}</span>
             </h3>
 
-            {openSourceProjects.map((repo, idx) => (
+            {blogData.openSourceSection.repositories.map((repo, idx) => (
               <motion.div
                 key={repo.name}
                 initial={{ opacity: 0, y: 30 }}
@@ -167,12 +120,12 @@ export default function BlogSection() {
                   </span>
 
                   <a
-                    href="https://github.com/Vaigarai14"
+                    href={blogData.openSourceSection.githubProfileUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-300 hover:text-white transition-colors"
                   >
-                    <span>View on GitHub</span>
+                    <span>{blogData.openSourceSection.viewGithubText}</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
                 </div>

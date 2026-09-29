@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sparkles, Volume2, VolumeX } from 'lucide-react';
+import { Menu, X, Sparkles } from 'lucide-react';
 import { navbarData } from '../data/navbarData';
 
-export default function Navbar({ isAudioActive, toggleAudio }) {
+export default function Navbar() {
   const [activeSection, setActiveSection] = useState('home');
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -80,29 +80,6 @@ export default function Navbar({ isAudioActive, toggleAudio }) {
 
           {/* Controls & CTA */}
           <div className="hidden md:flex items-center space-x-3">
-            {/* Audio Toggle */}
-            <button
-              onClick={toggleAudio}
-              className={`p-2 rounded-full border transition-all cursor-pointer ${
-                isAudioActive
-                  ? 'border-cyan-400/60 bg-cyan-500/15 text-cyan-300 shadow-[0_0_10px_rgba(56,189,248,0.3)]'
-                  : 'border-white/10 text-slate-400 hover:text-white hover:border-white/25'
-              }`}
-              title={
-                isAudioActive
-                  ? navbarData.controls.audio.activeTooltip
-                  : navbarData.controls.audio.inactiveTooltip
-              }
-              aria-label={navbarData.controls.audio.ariaLabel}
-            >
-              {isAudioActive ? (
-                <Volume2 className="w-4 h-4 animate-pulse text-cyan-400" />
-              ) : (
-                <VolumeX className="w-4 h-4" />
-              )}
-            </button>
-
-            {/* Quick Contact Button */}
             <a
               href={navbarData.controls.hireMe.href}
               className="relative inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg glass-morphism border border-cyan-400/40 text-cyan-300 hover:text-white hover:border-cyan-300 hover:bg-cyan-500/10 hover:shadow-[0_0_20px_rgba(56,189,248,0.35)] transition-all overflow-hidden group cursor-pointer"
@@ -114,13 +91,6 @@ export default function Navbar({ isAudioActive, toggleAudio }) {
 
           {/* Mobile Hamburger Toggle */}
           <div className="md:hidden flex items-center space-x-2">
-            <button
-              onClick={toggleAudio}
-              className="p-2 rounded-lg border border-white/10 text-slate-300"
-              aria-label={navbarData.controls.audio.ariaLabel}
-            >
-              {isAudioActive ? <Volume2 className="w-4 h-4 text-cyan-400" /> : <VolumeX className="w-4 h-4" />}
-            </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg border border-white/10 text-white hover:text-cyan-400 transition-colors"

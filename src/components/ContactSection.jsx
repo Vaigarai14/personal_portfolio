@@ -213,7 +213,7 @@ export default function ContactSection() {
                     <label className="block text-xs font-mono text-slate-300 uppercase tracking-wider">
                       {contactData.form.messageLabel}
                     </label>
-                    <button
+                    {/* <button
                       type="button"
                       onClick={handleVoiceSim}
                       className={`inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded transition-all cursor-pointer ${
@@ -234,7 +234,7 @@ export default function ContactSection() {
                           <span>{contactData.form.voiceInput.label}</span>
                         </>
                       )}
-                    </button>
+                    </button> */}
                   </div>
                   <textarea
                     required
@@ -291,14 +291,14 @@ export default function ContactSection() {
             </motion.div>
 
             {/* AI Assistant Chatbot Simulation */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="glass-card p-6 rounded-2xl border border-white/10 relative overflow-hidden"
-            >
-              <div className="flex items-center justify-between mb-4">
+            > */}
+              {/* <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-400 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-[0_0_10px_rgba(0,242,254,0.5)]">
                     <Bot className="w-4 h-4" />
@@ -313,10 +313,10 @@ export default function ContactSection() {
                     </span>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Chat Message Box */}
-              <div className="max-h-48 overflow-y-auto space-y-2.5 mb-4 p-3 rounded-xl bg-black/40 border border-white/5 text-xs">
+              {/* <div className="max-h-48 overflow-y-auto space-y-2.5 mb-4 p-3 rounded-xl bg-black/40 border border-white/5 text-xs">
                 {aiHistory.map((msg, mIdx) => (
                   <div
                     key={mIdx}
@@ -335,10 +335,10 @@ export default function ContactSection() {
                     <span>{contactData.aiAssistant.typingText}</span>
                   </div>
                 )}
-              </div>
+              </div> */}
 
               {/* Quick Prompt Triggers */}
-              <div className="space-y-1.5">
+              {/* <div className="space-y-1.5">
                 <div className="text-[11px] font-mono text-slate-400">
                   {contactData.aiAssistant.promptLabel}
                 </div>
@@ -353,8 +353,8 @@ export default function ContactSection() {
                     </button>
                   ))}
                 </div>
-              </div>
-            </motion.div>
+              </div> */}
+            {/* </motion.div> */}
 
             {/* Social Grid */}
             <motion.div

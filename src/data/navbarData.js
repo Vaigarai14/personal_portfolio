@@ -13,11 +13,6 @@ export const navbarData = {
     { name: 'Contact', href: '#contact' },
   ],
   controls: {
-    audio: {
-      activeTooltip: 'Mute ambient sound',
-      inactiveTooltip: 'Play ambient synth',
-      ariaLabel: 'Toggle sound',
-    },
     hireMe: {
       text: 'Hire Me',
       href: '#contact',

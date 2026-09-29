@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { Rocket, Download, Sparkles, Zap, ShieldCheck } from 'lucide-react';
 import { heroData } from '../data/heroData';
+import resumePdf from '../../assets/Vaikarai_Resume.pdf';
+import { saveAs } from 'file-saver';
 
 export default function HeroSection() {
   const triggerConfetti = (e) => {
@@ -20,13 +22,7 @@ export default function HeroSection() {
 
   const handleDownloadResume = (e) => {
     triggerConfetti(e);
-    const element = document.createElement('a');
-    const file = new Blob([heroData.resume.content], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = heroData.resume.fileName;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    saveAs(resumePdf, 'Vaikarai_Resume.pdf');
   };
 
   return (
